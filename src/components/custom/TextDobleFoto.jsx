@@ -34,7 +34,7 @@ export default function TextoDobleFoto({ Titulo, Texto, primeraFoto, segundaFoto
       </div>
       <div className="flex-1">
         <h2 className="text-2xl font-bold mb-2">{Titulo}</h2>
-        <p className=" md:text-3xl!">{Texto}</p>
+        <p className=" ">{Texto}</p>
       </div>
     </div>
   );
