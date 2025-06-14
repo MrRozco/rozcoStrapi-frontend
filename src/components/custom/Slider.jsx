@@ -31,7 +31,7 @@ export default function Slider({ Titulo, Subtitulo, Fotos, texto }) {
             }}
             centeredSlides={false}
             spaceBetween={100}
-            navigation={true}
+            navigation={false}
             virtual
             autoplay={{
             delay: 2500,

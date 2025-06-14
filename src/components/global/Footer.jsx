@@ -42,7 +42,7 @@ export const Footer = async () => {
                   : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${imageUrl.replace(/^\/+/, '')}`
               }
                 alt={logo.alternativeText || "Logo"}
-                width={150}
+                width={100}
                 height={100}
               />
               </Link>
@@ -54,7 +54,7 @@ export const Footer = async () => {
                 <Link
                   key={index}
                   href={link.href}
-                  className="font-semibold text-[#801c1c] text-3xl px-2 py-1 rounded transition-colors duration-200 hover:text-[#fff] hover:bg-[#801c1c]"
+                  className="font-semibold text-[#801c1c] text-xl md:text-2xl px-2 py-1 rounded transition-colors duration-200 hover:text-[#fff] hover:bg-[#801c1c]"
                 >
                   {link.texto}
                 </Link>
