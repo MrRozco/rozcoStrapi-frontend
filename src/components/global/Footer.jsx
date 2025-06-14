@@ -36,7 +36,11 @@ export const Footer = async () => {
             {logo && (
               <Link href="/" className="flex items-center">
               <Image
-                src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${logo.imagen.url}`}
+                src={
+                logo.imagen.url.startsWith('http')
+                  ? logo.imagen.url
+                  : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${imageUrl.replace(/^\/+/, '')}`
+              }
                 alt={logo.alternativeText || "Logo"}
                 width={150}
                 height={100}

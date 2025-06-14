@@ -18,9 +18,11 @@ export default function Tarjetas({ tarjeta }) {
             style={{ backgroundPosition: "left" }}
           >
             {item.Foto && (
-              <div className=" w-full h-[400px] mb-4 relative overflow-hidden rounded-lg flex-shrink-0">
+              <div className=" w-full h-[430px] mb-4 relative overflow-hidden rounded-lg flex-shrink-0">
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${item.Foto.url}`}
+                  src={item.Foto.url.startsWith('http')
+                    ? item.Foto.url
+                    : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/${item.Foto.url.replace(/^\/+/, '')}`}
                   alt={item.Foto.alternativeText || item.Titulo}
                   fill
                   style={{ objectFit: "cover", objectPosition: "center" }}

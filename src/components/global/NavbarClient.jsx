@@ -15,7 +15,11 @@ export default function NavbarClient({ logo, imageUrl, links, ctaData }) {
         {logo && (
           <Link href="/" className="flex items-center">
             <Image
-              src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${imageUrl}`}
+              src={
+                imageUrl.startsWith('http')
+                  ? imageUrl
+                  : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${imageUrl.replace(/^\/+/, '')}`
+              }
               alt={logo.texto || "RozctoTv Logo"}
               width={100}
               height={100}

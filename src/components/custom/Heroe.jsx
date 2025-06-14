@@ -1,13 +1,19 @@
 import React from 'react';
 
 export default function Heroe({ Titulo, Descripcion, Fondo }) {
+
+  
   return (
     <section
       className=" container mb-5! relative text-white py-3xl px-md flex flex-col items-center justify-center min-h-[70vh] md:min-h-[85vh] "
       style={
         Fondo
           ? {
-              backgroundImage: `url(${process.env.NEXT_PUBLIC_STRAPI_API_URL}${Fondo.url})`,
+              backgroundImage: `url(${
+            Fondo.url.startsWith('http')
+              ? Fondo.url
+              : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/${Fondo.url.replace(/^\/+/, '')}`
+          })`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',

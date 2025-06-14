@@ -15,7 +15,7 @@ export default function Slider({ Titulo, Subtitulo, Fotos, texto }) {
   return (
     <div className="container flex flex-col items-start justify-center w-full gap-8">
       <h2>{Titulo}</h2>
-      <div className='w-full flex gap-5'>
+      <div className='w-full flex gap-5 items-center '>
          <div className='w-1/2 sm:w-1/5'>
             <h3 className='mb-8'>{Subtitulo}</h3>
             <p className=''>{texto}</p>
@@ -43,7 +43,11 @@ export default function Slider({ Titulo, Subtitulo, Fotos, texto }) {
             <SwiperSlide key={foto.url} virtualIndex={index}>
                 <div className=" relative flex items-center">
                 <Image
-                    src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${foto.url}`}
+                    src={
+                        foto.url.startsWith('http')
+                            ? foto.url
+                            : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/${foto.url.replace(/^\/+/, '')}`
+                        }
                     alt={`Slide ${index + 1}`}
                     width={500}
                     height={700}

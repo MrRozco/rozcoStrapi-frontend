@@ -7,7 +7,11 @@ export default function TextoFoto({ Titulo, Texto, Foto, derecha, boton }) {
       <div className="flex-1">
         {Foto && (
           <Image
-            src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${Foto.url}`}
+            src={
+              Foto.url.startsWith("http")
+                ? Foto.url
+                : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/${Foto.url.replace(/^\/+/, "")}`
+            }
             alt={Foto.alternativeText || "Imagen"}
             width={500}
             height={300}
@@ -20,7 +24,7 @@ export default function TextoFoto({ Titulo, Texto, Foto, derecha, boton }) {
         <h2 className="text-2xl font-bold mb-2">{Titulo}</h2>
         <p className="text-lg">{Texto}</p>
         {boton && (
-          <Link href={boton.url} className=" btn mt-4">
+          <Link href={boton.url} className=" w-full text-center md:w-auto btn mt-4">
             {boton.texto}
           </Link>
         )}

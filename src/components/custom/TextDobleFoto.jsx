@@ -7,7 +7,9 @@ export default function TextoDobleFoto({ Titulo, Texto, primeraFoto, segundaFoto
         {primeraFoto && (
           <div className="aspect-[9/16] w-40 md:w-80 relative -translate-y-4">
             <Image
-              src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${primeraFoto.url}`}
+              src={primeraFoto.url.startsWith("http")
+                ? primeraFoto.url
+                : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${primeraFoto.url}`}
               alt={primeraFoto.alternativeText || "Imagen"}
               fill
               className="object-cover rounded-2xl transition-all duration-900 ease-out hover:scale-105"
@@ -19,7 +21,9 @@ export default function TextoDobleFoto({ Titulo, Texto, primeraFoto, segundaFoto
         {segundaFoto && (
           <div className="aspect-[9/16] w-40 md:w-80 relative translate-y-4">
             <Image
-              src={`${process.env.NEXT_PUBLIC_STRAPI_API_URL}${segundaFoto.url}`}
+              src={segundaFoto.url.startsWith("http")
+                ? segundaFoto.url
+                : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${segundaFoto.url}`}
               alt={segundaFoto.alternativeText || "Imagen"}
               fill
               className="object-cover rounded-2xl transition-all duration-900 ease-out hover:scale-105"

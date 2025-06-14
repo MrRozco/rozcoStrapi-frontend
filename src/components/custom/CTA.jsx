@@ -8,7 +8,11 @@ export default function CTA({ titulo, contenido, Boton, Background }) {
         className="container relative text-white py-3xl px-md flex flex-col items-center h-[50vh] justify-center text-center"  
             style={
             Background ? {
-                backgroundImage: `url(${process.env.NEXT_PUBLIC_STRAPI_API_URL}${Background.url})`,
+                backgroundImage: `url(${
+                        Background.url.startsWith('http')
+                        ? Background.url
+                        : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/${Background.url.replace(/^\/+/, '')}`
+                    })`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
