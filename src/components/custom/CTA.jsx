@@ -27,7 +27,7 @@ export default function CTA({ titulo, contenido, Boton, Background }) {
                 aria-hidden="true"
             ></div>
             <h2 className="z-10">{titulo}</h2>
-            <h3 className="z-10 !text-[#d3f6f6]">{contenido}</h3>
+            <h3 className="z-10 !text-[#fff]!">{contenido}</h3>
             <Link href={Boton?.url || '#'} className="px-15 py-2 md:py-5 bg-[#db0000] hover:bg-[#801c1c] z-10 m-5 rounded-lg text-2xl font-bold ">
                 {Boton?.Texto || 'Learn More'}
             </Link>
