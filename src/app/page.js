@@ -16,35 +16,40 @@ export async function generateMetadata() {
     // Add more meta tags as needed
   };
 }
+export const revalidate = 60;
 
+// -------------------------------------------------
+// 3. Home Page Component
+// -------------------------------------------------
 export default async function Home() {
   const queryParams = {
-  populate: {
-    Estructura: {
-      on: {
-        'plano.tarjetas': {
-          populate: {
-            tarjeta: {
-              populate: ['Foto'], // Explicitly populate the Foto field
+    populate: {
+      Estructura: {
+        on: {
+          'plano.tarjetas': {
+            populate: {
+              tarjeta: {
+                populate: ['Foto'],
+              },
             },
           },
+          'plano.heroe': { populate: '*' },
+          'plano.slider': { populate: '*' },
+          'plano.video-componente': { populate: '*' },
+          'plano.cta': { populate: '*' },
+          // Add more components here if needed
         },
-        // Add other components if needed, e.g.:
-        'plano.heroe': { populate: '*' },
-        'plano.slider': { populate: '*' },
-        'plano.video-componente': { populate: '*' },
-        'plano.cta': { populate: '*' },
-        // etc.
       },
     },
-  },
-};
+  };
 
   const response = await fetchFromStrapi('pagina-inicial', queryParams);
-  if (!response || !response.data) {
-    return <div>404 - Page Not Found</div>;
+
+  if (!response?.data) {
+    notFound(); // Triggers Next.js 404 page
   }
-  const homepage = response.data; // Extract the 'attributes' object
+
+  const homepage = response.data; // Full Strapi object: { id, attributes, ... }
 
   return <PageRenderer page={homepage} />;
 }
