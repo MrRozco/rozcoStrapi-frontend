@@ -1,6 +1,25 @@
 import PageRenderer from '@/components/PageRenderer';
 import { fetchFromStrapi } from '@/lib/api';
 
+export async function generateStaticParams() {
+  const data = await fetchFromStrapi('paginas', {
+    fields: ['url'],               // we only need the slug field
+    pagination: { limit: 1000 },   // increase if you have >1000 pages
+  });
+
+  if (!data?.data) return [];
+
+  return data.data.map((page) => ({
+    slug: page.url,   // <-- your Strapi field name
+  }));
+}
+
+// -------------------------------------------------
+// 2. ISR fallback for new pages + cache control
+// -------------------------------------------------
+export const dynamicParams = true;   // allow slugs not in generateStaticParams
+export const revalidate = 60;
+
 export async function generateMetadata({ params }) {
   const { slug } = params;
   const queryParams = {

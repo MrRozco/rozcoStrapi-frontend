@@ -4,7 +4,7 @@ import qs from 'qs';
 const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 const API_TOKEN = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
 
-export async function fetchFromStrapi(endpoint, queryParams = {}) {
+export async function fetchFromStrapi(endpoint: string, queryParams: Record<string, any> = {}) {
   let queryString = qs.stringify(queryParams, { encodeValuesOnly: true });
   queryString = queryString.replace(/%2A/g, '*');
   const url = `${API_URL}/api/${endpoint}?${queryString}`;
@@ -17,7 +17,7 @@ export async function fetchFromStrapi(endpoint, queryParams = {}) {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error fetching from Strapi: ${endpoint}`, error.response?.status, error.message);
+    console.error(`Error fetching from Strapi: ${endpoint}`, (error as any).response?.status, (error as any).message);
     return null;
   }
 }
