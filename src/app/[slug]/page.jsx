@@ -38,11 +38,11 @@ export async function generateMetadata({ params }) {
     populate: {},
   };
   const pageData = await fetchFromStrapi('paginas', query);
-  const attrs = pageData?.data?.[0]?.attributes || {};
+  const page = pageData?.data?.[0];
 
   return {
-    title: attrs.Titulo || 'Default Title',
-    description: attrs.Descripcion || 'Default description',
+    title: page?.attributes?.Titulo || page?.Titulo || 'Default Title',
+    description: page?.attributes?.Descripcion || page?.Descripcion || 'Default description',
   };
 }
 
