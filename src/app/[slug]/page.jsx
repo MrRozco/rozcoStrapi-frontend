@@ -1,52 +1,61 @@
+// app/[slug]/page.jsx
 import PageRenderer from '@/components/PageRenderer';
 import { fetchFromStrapi } from '@/lib/api';
+import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
-  const data = await fetchFromStrapi('paginas', {
-    fields: ['url'],               // we only need the slug field
-    pagination: { limit: 1000 },   // increase if you have >1000 pages
-  });
+  try {
+    const data = await fetchFromStrapi('paginas', {
+      fields: ['url'],
+      pagination: { limit: 1000 },
+    });
 
-  if (!data?.data) return [];
+    if (!data?.data) {
+      console.warn('⚠️ No pages found during build - check Strapi connection');
+      return [];
+    }
 
-  return data.data.map((page) => ({
-    slug: page.url,   // <-- your Strapi field name
-  }));
+    const slugs = data.data
+      .map((page) => page.url || page.attributes?.url)
+      .filter(Boolean) // Remove null/undefined
+      .map((url) => ({ slug: url }));
+
+    console.log(`✅ Pre-building ${slugs.length} pages at build time`);
+    return slugs;
+  } catch (error) {
+    console.error('❌ generateStaticParams failed:', error.message);
+    return []; // Return empty to allow build to continue
+  }
 }
 
-// -------------------------------------------------
-// 2. ISR fallback for new pages + cache control
-// -------------------------------------------------
-export const dynamicParams = true;   // allow slugs not in generateStaticParams
-export const revalidate = 60;
+export const dynamicParams = true; // Allow new pages on-demand
+export const revalidate = 86400; // Cache for 24 hours (content changes monthly)
 
 export async function generateMetadata({ params }) {
   const { slug } = params;
-  const queryParams = {
+  const query = {
     filters: { url: { $eq: slug } },
     populate: {},
   };
-  const pageData = await fetchFromStrapi("paginas", queryParams);
-
-  const { Titulo, Descripcion} = pageData.data[0];
+  const pageData = await fetchFromStrapi('paginas', query);
+  const attrs = pageData?.data?.[0]?.attributes || {};
 
   return {
-    title: Titulo || "Default Title",
-    description: Descripcion || "Default description",
-    // Add more meta tags as needed
+    title: attrs.Titulo || 'Default Title',
+    description: attrs.Descripcion || 'Default description',
   };
 }
 
 export default async function DynamicPage({ params }) {
   const { slug } = params;
-  const queryParams = {
+  const query = {
     filters: { url: { $eq: slug } },
     populate: { Estructura: { populate: '*' } },
   };
-  const pageData = await fetchFromStrapi("paginas", queryParams);
+  const pageData = await fetchFromStrapi('paginas', query);
 
-  if (!pageData || !pageData.data || pageData.data.length === 0) {
-    return <div>404 - Page Not Found</div>;
+  if (!pageData?.data?.length) {
+    notFound();
   }
   return <PageRenderer page={pageData.data[0]} />;
 }

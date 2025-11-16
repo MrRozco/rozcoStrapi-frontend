@@ -16,7 +16,7 @@ export async function generateMetadata() {
     // Add more meta tags as needed
   };
 }
-export const revalidate = 60;
+export const revalidate = 86400; // Cache for 24 hours (homepage rarely changes)
 
 // -------------------------------------------------
 // 3. Home Page Component
